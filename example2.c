@@ -1,17 +1,27 @@
 /*************************************************************************
-	> File Name: example1.c
+	> File Name: example2.c
 	> Author: AnSwEr
 	> Mail: 1045837697@qq.com
-	> Created Time: 2015年08月29日 星期六 14时17分21秒
+	> Created Time: 2015年08月29日 星期六 20时11分06秒
  ************************************************************************/
 
 /*
- * 打开和关闭数据库
+ * 查询数据库
  */
-
 #include<stdio.h>
 #include<stdlib.h>
 #include"sqlite3.h"
+
+static print_info(void *params,int column_size,char **column_value,char **column_name)
+{
+    int i;
+    
+    for(i=0;i<column_size;i++)
+        printf("\t%s",column_value[i]);
+    printf("\n");
+    
+    return 0;
+}
 
 int main(void)
 {
@@ -19,6 +29,7 @@ int main(void)
     sqlite3 *pDB = NULL;
     int ret = 0;
 
+    /*open*/
     ret = sqlite3_open(filename,&pDB);
     if(ret != SQLITE_OK)
     {
@@ -26,16 +37,18 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
-    /*do something*/
-    printf("open successfully!\n");
+    /*select*/
+    char *errmsg;
+    ret = sqlite3_exec(pDB,"select * from stutable",print_info,NULL,&errmsg);
+    if(ret != SQLITE_OK)
+        fprintf(stderr,"select error:%s\n",errmsg);
 
+    /*close*/
     if(pDB != NULL)
     {
         sqlite3_close(pDB);
         pDB = NULL;
     }
-
-    printf("close successfully!\n");
 
     return 0;
 }
