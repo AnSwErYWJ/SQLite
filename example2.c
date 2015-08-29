@@ -38,10 +38,12 @@ int main(void)
     }
 
     /*select*/
-    char *errmsg;
+    char *errmsg = 0;
     ret = sqlite3_exec(pDB,"select * from stutable",print_info,NULL,&errmsg);
     if(ret != SQLITE_OK)
         fprintf(stderr,"select error:%s\n",errmsg);
+
+    sqlite3_free(errmsg);
 
     /*close*/
     if(pDB != NULL)
