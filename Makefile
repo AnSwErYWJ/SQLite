@@ -1,5 +1,5 @@
-SRC = example2.c
-OBJS = example2.o
+SRC = example3.c
+OBJS = example3.o
 CC = gcc
 
 test: sqlite3.o $(OBJS)
